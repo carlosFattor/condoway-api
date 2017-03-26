@@ -1,0 +1,31 @@
+{
+  "name": "condoway-api",
+  "version": "1.0.0",
+  "description": "API to condoway app and site",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "vue",
+    "android"
+  ],
+  "author": "CarlosFattor carlos.fattor@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.1",
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "consign": "^0.1.2",
+    "express": "^4.15.2",
+    "express-status-monitor": "^0.1.9",
+    "express-validator": "^3.1.2",
+    "jsonwebtoken": "^7.3.0",
+    "mongoose": "^4.9.1",
+    "morgan": "^1.8.1",
+    "winston": "^2.3.1"
+  }
+}
