@@ -14,7 +14,7 @@ module.exports = function (app) {
             .create(user)
             .then(function (user) {
                 logger.info('new User = '+JSON.stringify(user));
-                res.sendStatus(400);
+                res.sendStatus(201);
             }, function (error) {
                 logger.error('Error trying create new user' + JSON.stringify(error));
                 res.status(500).json(error);
@@ -37,14 +37,18 @@ module.exports = function (app) {
             .findOne({ email: req.body.email })
             .then(function (user) {
                 if (!user) {
-                    console.log('LOGIN e/ou senha inválidos');
+                    logger.warning('login not found => ' + JSON.stringify(req.body.email))
                     res.sendStatus(401);
                     return;
                 } else {
 
-                    user.comparePassword(req.body.password, function (teste) {
+                    user.comparePassword(req.body.password, function (error, isMatch) {
+                        if(error){
+                            logger.warning('login not found => ' + JSON.stringify(req.body.email))
+                            res.sendStatus(401);
+                        }
                         let token = jwt.sign({ login: user._id }, app.get('secret'), { expiresIn: 84600 });
-
+                        logger.info("User loged => " + req.body.email)
                         res.set('x-access-token', token);
                         res.end();
                     });
@@ -52,27 +56,26 @@ module.exports = function (app) {
                 }
             }, function (error) {
                 console.log('Login e/ou senha inválidos');
+                logger.error("login error => " + JSON.stringify(error));
                 res.sendStatus(401);
                 return;
             });
-
     };
 
     api.verificarToken = function (req, res) {
         let token = req.headers['x-access-token'];
-        console.log('Verificando token');
 
         if (token) {
             jwt.verify(token, app.get('secret'), function (error, decoded) {
                 if (error) {
-                    console.log('Token rejeitado');
+                    logger.warning('Token reject => ' + token);
                     res.sendStatus(401);
                 }
                 req.user = decoded;
                 next();
             });
         } else {
-            console.log('Token rejeitado');
+            logger.error("Token rejected not found");
             res.sendStatus(401);
         }
     }

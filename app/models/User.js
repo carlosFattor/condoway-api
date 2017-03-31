@@ -12,13 +12,15 @@ const userSchema = mongoose.Schema({
     twitter: String,
     google: String,
     tokens: Array,
+    groups: Array,
 
     profile: {
         name: String,
         gender: String,
         location: String,
         website: String,
-        picture: String
+        picture: String,
+        bourn: Date
     }
 }, { timestamps: true });
 
@@ -42,9 +44,9 @@ userSchema.pre('save', function save(next) {
 /**
  * Helper method for validating user's password.
  */
-userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
+userSchema.methods.comparePassword = function comparePassword(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    cb(err, isMatch);
+    callback(err, isMatch);
   });
 };
 

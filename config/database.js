@@ -6,7 +6,7 @@ module.exports = function(URI){
     mongoose.connect('mongodb://' + URI);
 
     mongoose.connection.on('connected', function(){
-        console.log("conectado mongoDB");
+        console.log("conected mongoDB");
     });
 
     mongoose.connection.on('error', function(error){
@@ -14,12 +14,12 @@ module.exports = function(URI){
     });
 
     mongoose.connection.on('disconnected', function(){
-        console.log("Desconectado do MongoDB");
+        console.log("Disconected from MongoDB");
     });
 
     process.on('SIGINT', function(){
         mongoose.connection.close(function(){
-            console.log('Conexao fechada com o termino da aplicação');
+            console.log('Closed connection with app ended');
             process.exit(0);
         });
     })
